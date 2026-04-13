@@ -1,81 +1,79 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh lpR fFf">
+    <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <q-toolbar-title>
+          <q-icon name="shield" size="sm" class="q-mr-sm" />
+          InsurTech Seguros
+        </q-toolbar-title>
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-space />
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn
+          flat
+          round
+          dense
+          icon="help_outline"
+          @click="showHelp"
+        >
+          <q-tooltip>Ayuda</q-tooltip>
+        </q-btn>
+
+        <q-btn
+          flat
+          round
+          dense
+          icon="phone"
+        >
+          <q-tooltip>0800-123-4567</q-tooltip>
+        </q-btn>
       </q-toolbar>
     </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
-      </q-list>
-    </q-drawer>
 
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer class="bg-grey-2 text-grey-8">
+      <q-toolbar>
+        <q-toolbar-title class="text-caption">
+          © 2024 InsurTech Seguros. Todos los derechos reservados.
+        </q-toolbar-title>
+        <div class="text-caption">
+          <a href="#" class="text-grey-8 q-mr-md">Términos y Condiciones</a>
+          <a href="#" class="text-grey-8">Política de Privacidad</a>
+        </div>
+      </q-toolbar>
+    </q-footer>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import EssentialLink, { type EssentialLinkProps } from 'components/EssentialLink.vue';
+import { Dialog } from 'quasar';
 
-const linksList: EssentialLinkProps[] = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
-  },
-];
-
-const leftDrawerOpen = ref(false);
-
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
-}
+const showHelp = () => {
+  Dialog.create({
+    title: '¿Necesitás ayuda?',
+    message: `
+      <div class="q-pa-md">
+        <p><strong>Paso 1:</strong> Seleccioná tu vehículo</p>
+        <p><strong>Paso 2:</strong> Completá tus datos personales</p>
+        <p><strong>Paso 3:</strong> Elegí el tipo de cobertura</p>
+        <p><strong>Paso 4:</strong> Obtené tu cotización</p>
+        <br>
+        <p>Si tenés dudas, llamanos al <strong>0800-123-4567</strong></p>
+      </div>
+    `,
+    html: true
+  });
+};
 </script>
+
+<style scoped>
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+</style>

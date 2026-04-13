@@ -30,4 +30,41 @@ yarn-error.log*
 *.sln
 
 # local .env files
+.env
 .env.local*
+
+# Additional ignores (recommended)
+# Lockfiles
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# TypeScript incremental
+*.tsbuildinfo
+
+# Caches
+.cache/
+node_modules/.cache/
+
+# Tools
+.eslintcache
+.sass-cache
+
+# Yarn PnP
+.pnp.cjs
+.pnp.js
+
+# Coverage & tests
+coverage/
+.nyc_output/
+test-results/
+
+# IDE
+.vscode/
+
+# Secrets / keys
+*.key
+*.pem
+
+# OS
+desktop.ini
