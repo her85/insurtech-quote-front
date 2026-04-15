@@ -10,12 +10,18 @@ declare module '@vue/runtime-core' {
 }
 
 const api = axios.create({
-  baseURL: process.env.API_URL || 'http://localhost:3000/api',
+  baseURL: 'https://insurtech-quote-api.onrender.com/api', // import.meta.env.VITE_API_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json'
   }
 });
+/*
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  timeout: 30000,
+  withCredentials: true
+});*/
 
 // Request interceptor
 api.interceptors.request.use(

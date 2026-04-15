@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title>
           <q-icon name="shield" size="sm" class="q-mr-sm" />
-          InsurTech Seguros
+          Cotizador de Seguros Online
         </q-toolbar-title>
 
         <q-space />
