@@ -11,7 +11,6 @@ declare module '@vue/runtime-core' {
 
 const api = axios.create({
   baseURL: 'https://insurtech-quote-api.onrender.com/api', // import.meta.env.VITE_API_URL,
-  timeout: 30000,
   headers: {
     'Content-Type': 'application/json'
   }
