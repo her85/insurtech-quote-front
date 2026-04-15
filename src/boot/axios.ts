@@ -1,6 +1,7 @@
 // src/boot/axios.ts
 import { boot } from 'quasar/wrappers';
 import axios, { type AxiosInstance, type AxiosError } from 'axios';
+import { Loading, Notify } from 'quasar';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -55,9 +56,41 @@ api.interceptors.response.use(
   }
 );
 
-export default boot(({ app }) => {
+export default boot(async ({ app }) => {
+  // expose axios instances globally
   app.config.globalProperties.$axios = axios;
   app.config.globalProperties.$api = api;
+
+  // show a global loader until we confirm the backend is reachable
+  Loading.show({ message: 'Conectando con el backend...' });
+
+  try {
+    // quick ping to the API base. If the server responds (even 4xx),
+    // consider the backend reachable. Only network errors (no response)
+    // or 5xx will trigger a user notification.
+    await api.get('/', { timeout: 5000 }).catch((err) => {
+      if (axios.isAxiosError(err) && err.response) {
+        // server responded (e.g., 404) -> backend reachable
+        return;
+      }
+      // rethrow network errors so they are handled below
+      throw err;
+    });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (!error.response) {
+        Notify.create({ type: 'negative', message: 'No se pudo conectar con el backend. Revisa la URL o la conexión.' });
+      } else if (error.response.status >= 500) {
+        Notify.create({ type: 'negative', message: `Error en el servidor (${error.response.status}). Intenta más tarde.` });
+      }
+    } else {
+      Notify.create({ type: 'negative', message: 'Error inesperado al conectar con el backend.' });
+    }
+    // log for debugging
+    console.error('Backend connection error:', error);
+  } finally {
+    Loading.hide();
+  }
 });
 
 export { api };
