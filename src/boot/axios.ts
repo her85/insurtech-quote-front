@@ -62,13 +62,13 @@ export default boot(async ({ app }) => {
   app.config.globalProperties.$api = api;
 
   // show a global loader until we confirm the backend is reachable
-  Loading.show({ message: 'Conectando con el backend...' });
+  Loading.show({ message: 'Cargando...' });
 
   try {
     // quick ping to the API base. If the server responds (even 4xx),
     // consider the backend reachable. Only network errors (no response)
     // or 5xx will trigger a user notification.
-    await api.get('/', { timeout: 5000 }).catch((err) => {
+    await api.get('/', { timeout: 100000 }).catch((err) => {
       if (axios.isAxiosError(err) && err.response) {
         // server responded (e.g., 404) -> backend reachable
         return;
@@ -79,15 +79,15 @@ export default boot(async ({ app }) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (!error.response) {
-        Notify.create({ type: 'negative', message: 'No se pudo conectar con el backend. Revisa la URL o la conexión.' });
+        Notify.create({ type: 'negative', message: 'La conexion con el servidor puede tardar mas de lo habitual.' });
       } else if (error.response.status >= 500) {
         Notify.create({ type: 'negative', message: `Error en el servidor (${error.response.status}). Intenta más tarde.` });
       }
     } else {
-      Notify.create({ type: 'negative', message: 'Error inesperado al conectar con el backend.' });
+      Notify.create({ type: 'negative', message: 'Error inesperado al conectar con el servidor.' });
     }
     // log for debugging
-    console.error('Backend connection error:', error);
+    console.error('Server connection error:', error);
   } finally {
     Loading.hide();
   }
